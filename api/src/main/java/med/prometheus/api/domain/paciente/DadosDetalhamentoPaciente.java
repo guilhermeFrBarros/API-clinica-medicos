@@ -1,6 +1,6 @@
-package med.prometheus.api.paciente;
+package med.prometheus.api.domain.paciente;
 
-import med.prometheus.api.endereco.Endereco;
+import med.prometheus.api.domain.endereco.Endereco;
 
 public record DadosDetalhamentoPaciente(Long id,
                                         String nome,

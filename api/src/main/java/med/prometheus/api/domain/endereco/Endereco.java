@@ -1,4 +1,4 @@
-package med.prometheus.api.endereco;
+package med.prometheus.api.domain.endereco;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

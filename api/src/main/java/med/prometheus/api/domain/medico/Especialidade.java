@@ -1,4 +1,4 @@
-package med.prometheus.api.medico;
+package med.prometheus.api.domain.medico;
 
 public enum Especialidade {
 

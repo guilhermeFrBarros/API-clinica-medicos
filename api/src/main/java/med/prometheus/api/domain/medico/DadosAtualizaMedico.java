@@ -1,7 +1,7 @@
-package med.prometheus.api.medico;
+package med.prometheus.api.domain.medico;
 
 import jakarta.validation.constraints.NotNull;
-import med.prometheus.api.endereco.DadosEndereco;
+import med.prometheus.api.domain.endereco.DadosEndereco;
 
 public record DadosAtualizaMedico(
         @NotNull

@@ -2,9 +2,8 @@ package med.prometheus.api.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
-import med.prometheus.api.medico.DadosDetalhamentoMedico;
-import med.prometheus.api.medico.DadosListagemMedico;
-import med.prometheus.api.paciente.*;
+import med.prometheus.api.domain.paciente.*;
+import med.prometheus.api.domain.paciente.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +33,7 @@ public class PacienteController {
     }
 
     @GetMapping
-    public ResponseEntity< Page<DadosListagemPaciente> > listar( @PageableDefault( size = 10, sort = {"nome"}) Pageable paginacao) {
+    public ResponseEntity< Page<DadosListagemPaciente> > listar(@PageableDefault( size = 10, sort = {"nome"}) Pageable paginacao) {
         Page<DadosListagemPaciente> pagePacienteDTO = repository
                 .findAllByAtivoTrue(paginacao).map(DadosListagemPaciente::new);
 
@@ -51,7 +50,7 @@ public class PacienteController {
             return new ResponseEntity( new DadosDetalhamentoPaciente( paciente ), HttpStatus.OK);
         }
         catch (EntityNotFoundException exception) {
-            return new ResponseEntity( "ERRO SERVER", HttpStatus.INTERNAL_SERVER_ERROR); // codigo ERRO no servidor
+            return new ResponseEntity( "ERRO SERVER", HttpStatus.NOT_FOUND); // codigo ERRO no servidor
         }
     }
 

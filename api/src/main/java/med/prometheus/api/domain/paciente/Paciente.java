@@ -1,9 +1,8 @@
-package med.prometheus.api.paciente;
+package med.prometheus.api.domain.paciente;
 
 import jakarta.persistence.*;
 import lombok.*;
-import med.prometheus.api.endereco.Endereco;
-import med.prometheus.api.medico.DadosAtualizaMedico;
+import med.prometheus.api.domain.endereco.Endereco;
 
 @Entity
 @Table( name = "pacientes" )

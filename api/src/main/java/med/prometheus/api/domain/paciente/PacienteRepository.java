@@ -1,4 +1,4 @@
-package med.prometheus.api.paciente;
+package med.prometheus.api.domain.paciente;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

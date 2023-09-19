@@ -1,4 +1,4 @@
-package med.prometheus.api.endereco;
+package med.prometheus.api.domain.endereco;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

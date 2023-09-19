@@ -1,4 +1,4 @@
-package med.prometheus.api.medico;
+package med.prometheus.api.domain.medico;
 
 public record DadosListagemMedico( Long id, String nome, String email, String crm, Especialidade especialidade ) {
     public DadosListagemMedico( Medico medico ) {

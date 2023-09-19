@@ -1,14 +1,13 @@
-package med.prometheus.api.medico;
+package med.prometheus.api.domain.paciente;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import med.prometheus.api.endereco.DadosEndereco;
-import org.hibernate.validator.constraints.UniqueElements;
+import med.prometheus.api.domain.endereco.DadosEndereco;
 
-public record DadosCadastroMedico(
+public record DadosCadastroPaciente(
         @NotBlank
         String nome,
         @NotBlank
@@ -17,11 +16,8 @@ public record DadosCadastroMedico(
         @NotBlank
         String telefone,
         @NotBlank
-        @Pattern( regexp = "\\d{4,6}")
-        String crm,
-        @NotNull
-        Especialidade especialidade,
+        @Pattern( regexp = "\\d{11}" )
+        String CPF,
         @NotNull
         @Valid
-        DadosEndereco endereco
-) { }
+        DadosEndereco endereco) { }
