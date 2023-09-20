@@ -1,4 +1,4 @@
-package med.prometheus.api.infra;
+package med.prometheus.api.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
