@@ -2,6 +2,8 @@ package med.prometheus.api.controller;
 
 import jakarta.validation.Valid;
 import med.prometheus.api.domain.usuario.DadosAutenticacao;
+import med.prometheus.api.domain.usuario.Usuario;
+import med.prometheus.api.infra.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,15 +13,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/login")
 public class AutenticacaoController {
+    @Autowired
+    private AuthenticationManager manager;  // chama a classe indiretamente AutenticacaoService
 
     @Autowired
-    private AuthenticationManager manager;
-
+    private TokenService tokenService;
     @PostMapping
     public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados ) {
-        var token = new UsernamePasswordAuthenticationToken( dados.login(), dados.senha() );
-        var authentication = manager.authenticate(token);
+        var DTOSpringSecurity = new UsernamePasswordAuthenticationToken( dados.login(), dados.senha() );
+        //  ^ está guardando objeto
+        var authentication = manager.authenticate(DTOSpringSecurity);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.gerarToken( (Usuario) authentication.getPrincipal() );
+        return ResponseEntity.ok( token );
     }
 }
