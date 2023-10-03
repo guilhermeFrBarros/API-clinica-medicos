@@ -3,6 +3,7 @@ package med.prometheus.api.controller;
 import jakarta.validation.Valid;
 import med.prometheus.api.domain.consulta.AgendaDeConsulta;
 import med.prometheus.api.domain.consulta.DadosAgendamentoConsulta;
+import med.prometheus.api.domain.consulta.DadosCancelamentoConsulta;
 import med.prometheus.api.domain.consulta.DadosDetalhamentoConsulta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +20,19 @@ public class ConsultaControllers {
     @Autowired
     private AgendaDeConsulta agendaDeConsulta;
 
-    @PostMapping
+    @PostMapping("/agendar")
     @Transactional
     public ResponseEntity agendar(@RequestBody @Valid DadosAgendamentoConsulta dados) {
         agendaDeConsulta.agendar( dados );
 
         return ResponseEntity.ok( new DadosDetalhamentoConsulta( null, null, null, null)  );
+    }
+
+    @PostMapping("/cancelar")
+    @Transactional
+    public ResponseEntity cancelar(@RequestBody @Valid DadosCancelamentoConsulta dados ) {
+        agendaDeConsulta.cancelar(dados);
+
+        return ResponseEntity.noContent().build();
     }
 }

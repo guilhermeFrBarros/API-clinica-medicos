@@ -7,6 +7,10 @@ import med.prometheus.api.domain.paciente.Paciente;
 import med.prometheus.api.domain.paciente.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.time.LocalDateTime;
 
 @Service
 public class AgendaDeConsulta {
@@ -33,7 +37,7 @@ public class AgendaDeConsulta {
 //        var paciente2 = pacienteRepository.findById(dados.idPaciente()).get(); -> serve para quando vc que manipular o paciente retonrado
         var medico = escolherMedico( dados );
 
-        Consulta consulta = new Consulta( null, medico, paciente, dados.data() );
+        Consulta consulta = new Consulta( null, medico, paciente, dados.data(), null );
         consultaRepository.save( consulta );
     }
 
@@ -43,9 +47,29 @@ public class AgendaDeConsulta {
         }
 
         if (dados.especialidade() == null) {
-            throw  new ValidacaoException(" Esprcialidade é Obrigatoria quando médico nãop definida ");
+            throw  new ValidacaoException(" Especialidade é Obrigatoria quando médico nãop definida ");
         }
 
         return medicoRepository.escolherMedicoAleatorioLivreNaData( dados.especialidade(), dados.data() );
+    }
+
+
+    public void cancelar(DadosCancelamentoConsulta dados) {
+        if ( !consultaRepository.existsById(dados.idConsulta())) {
+            throw new ValidacaoException(" Id da Consulta inexistene ");
+        }
+
+        Consulta consulta = consultaRepository.findById(dados.idConsulta()).get();
+        // retorna um optinal se não existir
+
+        LocalDateTime dataMinima = consulta.getData();
+        System.out.println(dataMinima);
+        if ( LocalDateTime.now().isAfter(dataMinima.minusHours(24) ) ) {
+            throw new ValidacaoException("Data de alteracao de no mimimo 24H antes da comnsulta");
+        }
+//        var consulta = consultaRepository.getReferenceById(dados.idConsulta());
+        consulta.cancela( dados);
+
+
     }
 }
