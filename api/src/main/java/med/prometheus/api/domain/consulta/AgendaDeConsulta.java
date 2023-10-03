@@ -24,10 +24,11 @@ public class AgendaDeConsulta {
             throw new ValidacaoException("Id do paciente informado não existe!");
         }
 
-        // veriafica se vei o id do medico e se o emdico existe
+        // veriafica se vei o id do medico e se o medico existe
         if (dados.idMedico() != null && !medicoRepository.existsById(dados.idMedico())) {
             throw new ValidacaoException("Id do médico informado não existe!");
         }
+
         Paciente paciente = pacienteRepository.getReferenceById(dados.idPaciente());  // serve para acessar os dasdos ds pacientes acessados
 //        var paciente2 = pacienteRepository.findById(dados.idPaciente()).get(); -> serve para quando vc que manipular o paciente retonrado
         var medico = escolherMedico( dados );
