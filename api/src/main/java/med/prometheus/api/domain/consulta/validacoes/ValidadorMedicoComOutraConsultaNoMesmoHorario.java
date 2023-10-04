@@ -4,12 +4,15 @@ import med.prometheus.api.domain.ValidacaoException;
 import med.prometheus.api.domain.consulta.ConsultaRepository;
 import med.prometheus.api.domain.consulta.DadosAgendamentoConsulta;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class ValidadorMedicoComOutraConsultaNoMesmoHorario  {
+@Component
+public class ValidadorMedicoComOutraConsultaNoMesmoHorario  implements ValidadorAgendamentoDeConsulta {
 
     @Autowired
     private ConsultaRepository repository;
 
+    @Override
     public void validar(DadosAgendamentoConsulta dados) {
         var medicoPossuiOutraConsultaNoMesmoHorario = repository.existsByMedicoIdAndDataAndMotivoDoCancelamentoIsNull(dados.idMedico(), dados.data());
         if (medicoPossuiOutraConsultaNoMesmoHorario) {

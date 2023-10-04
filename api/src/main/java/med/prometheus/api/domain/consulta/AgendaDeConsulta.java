@@ -1,6 +1,7 @@
 package med.prometheus.api.domain.consulta;
 
 import med.prometheus.api.domain.ValidacaoException;
+import med.prometheus.api.domain.consulta.validacoes.ValidadorAgendamentoDeConsulta;
 import med.prometheus.api.domain.medico.Medico;
 import med.prometheus.api.domain.medico.MedicoRepository;
 import med.prometheus.api.domain.paciente.Paciente;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class AgendaDeConsulta {
@@ -23,7 +25,10 @@ public class AgendaDeConsulta {
 
     @Autowired
     private PacienteRepository pacienteRepository;
-    public void agendar( DadosAgendamentoConsulta dados ) {
+
+    @Autowired // injeta todos os validadores que implementa a Inteface ValidadorAgendamentoDeConsulta
+    List <ValidadorAgendamentoDeConsulta> validadores;
+    public DadosDetalhamentoConsulta agendar( DadosAgendamentoConsulta dados ) {
         if (!pacienteRepository.existsById(dados.idPaciente())) {
             throw new ValidacaoException("Id do paciente informado não existe!");
         }
@@ -33,12 +38,19 @@ public class AgendaDeConsulta {
             throw new ValidacaoException("Id do médico informado não existe!");
         }
 
+        validadores.forEach( v -> v.validar( dados ));
+
         Paciente paciente = pacienteRepository.getReferenceById(dados.idPaciente());  // serve para acessar os dasdos ds pacientes acessados
 //        var paciente2 = pacienteRepository.findById(dados.idPaciente()).get(); -> serve para quando vc que manipular o paciente retonrado
         var medico = escolherMedico( dados );
+        if (medico == null) {
+            throw new ValidacaoException("Não existe Medico disponinvel nessa Dada");
+        }
 
         Consulta consulta = new Consulta( null, medico, paciente, dados.data(), null );
         consultaRepository.save( consulta );
+
+        return new DadosDetalhamentoConsulta( consulta );
     }
 
     private Medico escolherMedico(DadosAgendamentoConsulta dados) {

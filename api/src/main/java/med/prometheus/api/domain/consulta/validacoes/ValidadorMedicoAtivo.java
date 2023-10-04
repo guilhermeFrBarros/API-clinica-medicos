@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidadorMedicoAtivo {
+public class ValidadorMedicoAtivo implements  ValidadorAgendamentoDeConsulta{
 
     @Autowired
     private MedicoRepository repository;
 
+    @Override
     public void validar(DadosAgendamentoConsulta dados) {
         //escolha do medico opcional
         if (dados.idMedico() == null) {

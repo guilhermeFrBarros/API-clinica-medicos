@@ -1,6 +1,7 @@
 package med.prometheus.api.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
+import med.prometheus.api.domain.ValidacaoException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,6 +21,12 @@ public class TratarErros {
         var erros = ex.getFieldErrors();
 
         return  ResponseEntity.badRequest().body( erros.stream().map( DadosErroValitation::new).toList() );
+    }
+
+    @ExceptionHandler( ValidacaoException.class )
+    public ResponseEntity traterErroRegraDeNegocio( ValidacaoException ex ) {
+
+        return ResponseEntity.badRequest().body( ex.getMessage() );
     }
 
     private record DadosErroValitation ( String campo, String message ) {
